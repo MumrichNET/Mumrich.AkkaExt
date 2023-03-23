@@ -1,7 +1,9 @@
-using System.Threading.Tasks;
+using Build.Tasks;
 
+using Cake.Common.IO;
+using Cake.Common.Tools.DotNet;
+using Cake.Common.Tools.DotNet.NuGet.Push;
 using Cake.Core;
-using Cake.Core.Diagnostics;
 using Cake.Frosting;
 
 namespace Build;
@@ -16,44 +18,31 @@ public static class Program
   }
 }
 
-public class BuildContext : FrostingContext
-{
-  public BuildContext(ICakeContext context) : base(context)
-  {
-    Delay = context.Arguments.HasArgument("delay");
-  }
-
-  public bool Delay { get; set; }
-}
-
-[TaskName("Default")]
-[IsDependentOn(typeof(WorldTask))]
-public class DefaultTask : FrostingTask
+[TaskName("build")]
+[IsDependentOn(typeof(PackMumrichAkkaExtTask))]
+public class BuildTask : FrostingTask<BuildContext>
 {
 }
 
-[TaskName("Hello")]
-public sealed class HelloTask : FrostingTask<BuildContext>
+[TaskName("nuget-publish")]
+[IsDependentOn(typeof(BuildTask))]
+public class NugetPublishTask : FrostingTask<BuildContext>
 {
   public override void Run(BuildContext context)
   {
-    context.Log.Information("Hello");
-  }
-}
-
-[TaskName("World")]
-[IsDependentOn(typeof(HelloTask))]
-public sealed class WorldTask : AsyncFrostingTask<BuildContext>
-{
-  // Tasks can be asynchronous
-  public override async Task RunAsync(BuildContext context)
-  {
-    if (context.Delay)
+    if (string.IsNullOrWhiteSpace(context.NugetOrgApiKey))
     {
-      context.Log.Information("Waiting...");
-      await Task.Delay(1500);
+      throw new CakeException($"Property '{nameof(context.NugetOrgApiKey)}' must be set!");
     }
 
-    context.Log.Information("World");
+    foreach (var nugetFile in context.GetFiles($"{context.BuildOutputPath}/*.nupkg"))
+    {
+      context.DotNetNuGetPush(nugetFile, new DotNetNuGetPushSettings
+      {
+        ApiKey = context.NugetOrgApiKey,
+        Source = context.NugetOrgSource,
+        SkipDuplicate = true
+      });
+    }
   }
 }
