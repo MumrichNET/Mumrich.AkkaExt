@@ -20,6 +20,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Build", "build\Build.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mumrich.AkkaExt", "Mumrich.AkkaExt\Mumrich.AkkaExt.csproj", "{BD7FD61E-00E1-4B39-9226-B4C25B90CF3A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{E03B5F31-1DD8-481F-9FFD-67533DE0B67F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{82EC543D-C681-4629-902E-DB7B630009A2}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\main.yml = .github\workflows\main.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{64ACD956-775E-4503-B9EB-22C323E05269}"
+	ProjectSection(SolutionItems) = preProject
+		.vscode\launch.json = .vscode\launch.json
+		.vscode\tasks.json = .vscode\tasks.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +50,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E03B5F31-1DD8-481F-9FFD-67533DE0B67F} = {06F8A8DA-3E0D-4EAF-913A-BF922E8738E8}
+		{82EC543D-C681-4629-902E-DB7B630009A2} = {E03B5F31-1DD8-481F-9FFD-67533DE0B67F}
+		{64ACD956-775E-4503-B9EB-22C323E05269} = {06F8A8DA-3E0D-4EAF-913A-BF922E8738E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BC2F0FCD-353E-4D94-A1FC-B0D32DB624D5}
